@@ -7,7 +7,6 @@ import java.util.TreeMap;
 public class EngUkrDictionary {
 
     private Map<String, String> map;
-    private String text;
     private String pathToDictionary;
 
     public EngUkrDictionary(String pathToDictionary) {
@@ -24,14 +23,6 @@ public class EngUkrDictionary {
         this.map = map;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public void translateText(String src, String dest) {
         File source = new File(src);
         File destination = new File(dest);
@@ -40,17 +31,19 @@ public class EngUkrDictionary {
         }
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(src));
              PrintWriter printWriter = new PrintWriter(dest)) {
+            StringBuilder stringBuilder = new StringBuilder();
             String s;
             while ((s = bufferedReader.readLine()) != null) {
-                setText(s);
+                stringBuilder.append(s);
                 String[] array = s.split("[\\pP\\s]");
                 for (int i = 0; i < array.length; i++) {
                     if (map.containsKey(array[i])) {
-                        setText(text.replace(array[i], map.get(array[i])));
-                    } 
+                        stringBuilder.replace(stringBuilder.indexOf(array[i]), (stringBuilder.indexOf(array[i]) + array[i].length()), map.get(array[i]));
+                    }
                 }
-                printWriter.write(text);
+                printWriter.write(stringBuilder.toString());
                 printWriter.println();
+                stringBuilder.setLength(0);
             }
         } catch (IOException e) {
             e.printStackTrace();
