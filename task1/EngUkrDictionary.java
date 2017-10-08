@@ -43,11 +43,11 @@ public class EngUkrDictionary {
             String s;
             while ((s = bufferedReader.readLine()) != null) {
                 setText(s);
-                String[] array = s.split("[\\s\\p{P}]");
+                String[] array = s.split("[\\pP\\s]");
                 for (int i = 0; i < array.length; i++) {
                     if (map.containsKey(array[i])) {
                         setText(text.replace(array[i], map.get(array[i])));
-                    }
+                    } 
                 }
                 printWriter.write(text);
                 printWriter.println();
